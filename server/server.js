@@ -23,10 +23,15 @@ if (process.env.NODE_ENV === 'production') {
         throw new Error('Set a unique JWT_SECRET with at least 32 characters before running in production.');
     }
 }
-const allowedOrigins = (process.env.CLIENT_ORIGIN || '')
+const configuredOrigins = (process.env.CLIENT_ORIGIN || '')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
+const allowedOrigins = [...new Set([
+    'https://study-mate-beta-one.vercel.app',
+    'http://localhost:5173',
+    ...configuredOrigins,
+])];
 const allowAnyOrigin = process.env.NODE_ENV !== 'production' && allowedOrigins.length === 0;
 
 app.use(cors({
